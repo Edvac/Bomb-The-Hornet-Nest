@@ -3,7 +3,7 @@
  */
 public interface Calculate
 {
-    public void map(int x, int y);
-    public void distanceMax(); // calculaters dmax among all nests
-    public int penalty(); // calculates if kiled hornets have been counted more than once
+//    public void map(int x, int y);
+//    public void distanceMax(); // calculaters dmax among all nests
+//    public int penalty(); // calculates if kiled hornets have been counted more than once
 }
