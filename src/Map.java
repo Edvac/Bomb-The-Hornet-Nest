@@ -8,9 +8,10 @@ import java.util.Arrays;
  */
 public class Map
 {
+    // static problem solution
     private int [][] arrayMap = {{25,65,100},{23,8,200},{7,13,327},{95,53,440},{3,3,450},
-    {54,56,639},{67,78,650},{32,4,678},{24,76,750},{66,89,801},
-    {84,4,945},{34,23,967}};
+            {54,56,639},{67,78,650},{32,4,678},{24,76,750},{66,89,801},
+            {84,4,945},{34,23,967}};
 
     private double distanceMax;
 
@@ -28,34 +29,30 @@ public class Map
     {
         this.x = x;
         this.y = y;
-     arrayMap = new int[x][y];
+        arrayMap = new int[x][y];
     }
 
     public double distanceMax()
     {
-      double max = 0.0;
+        double max = 0.0;
         double d ;
 
         for(int row = 0;row<this.x;row++)
         {
-            for(int row1 = row+1;row1<this.x;row1++)
+            for(int row1 = row+1;row1<this.x;row1++) // row+1 to avoid redundant computations i.e. ([1]-[8] )^2 , ([8]-[1] )^2
             {
-
-                   d = Math.sqrt(Math.pow((arrayMap[row][0]-arrayMap[row1][0]),2)+
-                          Math.pow((arrayMap[row][1]-arrayMap[row1][1]),2));
+                d = Math.sqrt(Math.pow((arrayMap[row][0]-arrayMap[row1][0]),2)+
+                        Math.pow((arrayMap[row][1]-arrayMap[row1][1]),2));
                 if(max<d)
                 {
                     max = d;
                 }
                 System.out.print(d+"\t\n");
             }
-
         }
-        //double d = Math.sqrt(Math.pow((arrayMap[0][0]-arrayMap[1][0]),2)+Math.pow((arrayMap[0][1]-arrayMap[1][1]),2));
         distanceMax = max;
-
         return distanceMax;
-    }
+    } // end distanceMax
 
     public int[][] getArrayMap()
     {
@@ -87,9 +84,7 @@ public class Map
                 arrayMapString +=  arrayMap[i][j] + "," ;
             }
             arrayMapString += "\n";
-
-
         }
         return arrayMapString;
-    }
+    } // end toString
 }// end map
