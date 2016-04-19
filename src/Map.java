@@ -1,55 +1,95 @@
-import org.jgap.FitnessFunction;
-import org.jgap.IChromosome;
-import org.jgap.impl.DefaultConfiguration;
+
 
 import javax.security.auth.login.Configuration;
+import java.util.Arrays;
 
 /**
  * Created by George, Haris and Hronis on 11-Apr-16.
  */
 public class Map
 {
-//    int [][] arrayMap;
-//
-//    public Map()
-//    {
-//        // [nest rank], [coordinates], [number of hornets
-//        arrayMap = new int[12][3];
-//    }
-//
-//    public Map(int x,int y)
-//    {
-//     arrayMap = new int[x][y];
-//    }
-//
-//    public void distanceMax()
-//    {
-//
-//
-//    }
-    private static final int MAX_EVOLUTIONS_PERMITTED = 2500;
-    public static long timeTotal = 0;
+    private int [][] arrayMap = {{25,65,100},{23,8,200},{7,13,327},{95,53,440},{3,3,450},
+    {54,56,639},{67,78,650},{32,4,678},{24,76,750},{66,89,801},
+    {84,4,945},{34,23,967}};
 
-    // Chromosome
-    public static IChromosome calculateMapMinimum(int people) throws Exception
+    private double distanceMax;
+
+    private int x;
+    private int y;
+
+    public Map()
     {
-        // sindesi me times prokathorismenes
-        Configuration conf = new DefaultConfiguration();
+        x = 12;
+        y = 3;
+        distanceMax = 141.42;
+    }
 
-        // kaliteri epilogi gia tin epomeni geneia
-        conf.setPresservFittestIndividual(true);
+    public Map(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+     arrayMap = new int[x][y];
+    }
 
-        // dimiourgia sinartisis me anathesi timis
-        FitnessFunction myFunc = new MinimumFunction(people);
-        conf.setFitnessFunction(myFunc);
+    public double distanceMax()
+    {
+      double max = 0.0;
+        double d ;
 
-        // 6 goniadia, 6 chromosomata
-        Gene [] sampleGenes = new Gene[6];
-        sampleGenes[0]
-    } // end calculateMapMinimum
+        for(int row = 0;row<this.x;row++)
+        {
+            for(int row1 = row+1;row1<this.x;row1++)
+            {
+
+                   d = Math.sqrt(Math.pow((arrayMap[row][0]-arrayMap[row1][0]),2)+
+                          Math.pow((arrayMap[row][1]-arrayMap[row1][1]),2));
+                if(max<d)
+                {
+                    max = d;
+                }
+                System.out.print(d+"\t\n");
+            }
+
+        }
+        //double d = Math.sqrt(Math.pow((arrayMap[0][0]-arrayMap[1][0]),2)+Math.pow((arrayMap[0][1]-arrayMap[1][1]),2));
+        distanceMax = max;
+
+        return distanceMax;
+    }
+
+    public int[][] getArrayMap()
+    {
+        return arrayMap;
+    }
+
+    public void setArrayMap(int[][] arrayMap)
+    {
+        this.arrayMap = arrayMap;
+    }
+
+    public double getDistaneMax()
+    {
+        return distanceMax;
+    }
+
+    public void setDistaneMax(float distaneMax)
+    {
+        this.distanceMax = distaneMax;
+    }
+
+    @Override
+    public String toString()
+    {
+        String arrayMapString ="";
+        for (int i=0; i<x; i++){
+            arrayMapString += "Number Nest "+(i+1)+" :";
+            for (int j=0; j<y; j++){
+                arrayMapString +=  arrayMap[i][j] + "," ;
+            }
+            arrayMapString += "\n";
 
 
-
-
-
-}
+        }
+        return arrayMapString;
+    }
+}// end map
