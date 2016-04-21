@@ -1,3 +1,5 @@
+package javaapplication2;
+
 /**
  * Created by George on 12-Apr-16.
  */
