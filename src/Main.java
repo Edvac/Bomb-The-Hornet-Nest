@@ -1,10 +1,12 @@
+package javaapplication2;
+
 import java.util.Random;
 import org.w3c.dom.Document;
 
 public class Main
 {
 
-    private static void calculateB(Map map1)
+    public static void calculateB(Map map1)
     {
         // Bombs
         double B[] = new double [3];
@@ -14,6 +16,7 @@ public class Main
         // get hornets' nests map to calculate d
         int arrayMap [][]= map1.getArrayMap();
         double d ;
+        int sumDeadHornets =0;
         // calculate d for each bomb with each nest
         for(int k = 0; k < 3;k++)
         {
@@ -24,9 +27,11 @@ public class Main
                 // Theoretical Hornets killed by single bomb (Doesn't calculating overlapping kills by other bombs)
                 B[k] += arrayMap[i][2]*(map1.getDistaneMax()/((20*d)+0.00001));
             }
-            System.out.println(B[k]);
+            System.out.println("Bomb " + (k+1)+": " +B[k] + " Coordinates: x:" + bombMap[k][0]+", y:"+bombMap[k][1]);
+        
+            sumDeadHornets +=B[k];
         }
-
+         System.out.println("Dead Hornets: "+sumDeadHornets);
     } // end calculateB
     public static void main(String[] args)
     {
@@ -34,6 +39,8 @@ public class Main
 
         Map map1 = new Map();
         calculateB(map1);
+        
+        System.out.println("Distance max: "+map1.distanceMax());
 
     } // end main method
 

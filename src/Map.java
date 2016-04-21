@@ -1,3 +1,5 @@
+package javaapplication2;
+
 
 
 import javax.security.auth.login.Configuration;
@@ -34,24 +36,7 @@ public class Map
 
     public double distanceMax()
     {
-        double max = 0.0;
-        double d ;
-
-        for(int row = 0;row<this.x;row++)
-        {
-            for(int row1 = row+1;row1<this.x;row1++) // row+1 to avoid redundant computations i.e. ([1]-[8] )^2 , ([8]-[1] )^2
-            {
-                d = Math.sqrt(Math.pow((arrayMap[row][0]-arrayMap[row1][0]),2)+
-                        Math.pow((arrayMap[row][1]-arrayMap[row1][1]),2));
-                if(max<d)
-                {
-                    max = d;
-                }
-                System.out.print(d+"\t\n");
-            }
-        }
-        distanceMax = max;
-        return distanceMax;
+       return Math.sqrt(2) * 100; //Anti toy 100 einai i diastasi tou pinaka px. n
     } // end distanceMax
 
     public int[][] getArrayMap()
