@@ -4,7 +4,7 @@ import org.w3c.dom.Document;
 public class Main
 {
 
-    public static void calculateB(Map map1)
+    private static void calculateB(Map map1)
     {
         // Bombs
         double B[] = new double [3];
