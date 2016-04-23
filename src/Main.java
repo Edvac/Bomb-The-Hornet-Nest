@@ -1,4 +1,3 @@
-package javaapplication2;
 
 import java.util.Random;
 import org.w3c.dom.Document;
@@ -28,20 +27,44 @@ public class Main
                 B[k] += arrayMap[i][2]*(map1.getDistaneMax()/((20*d)+0.00001));
             }
             System.out.println("Bomb " + (k+1)+": " +B[k] + " Coordinates: x:" + bombMap[k][0]+", y:"+bombMap[k][1]);
-        
+
             sumDeadHornets +=B[k];
         }
-         System.out.println("Dead Hornets: "+sumDeadHornets);
+        System.out.println("Dead Hornets: "+sumDeadHornets);
+
+
+
     } // end calculateB
+
+
     public static void main(String[] args)
     {
-        System.out.println("Genetics2!");
-
+        int maxGenerations = 500;
+        int population = 50;
+        int chromosome[][] = new int[population][6]; // array with  chromosome
+        Random rand = new Random();
         Map map1 = new Map();
-        calculateB(map1);
-        
-        System.out.println("Distance max: "+map1.distanceMax());
+        int map [][] = map1.getArrayMap();
+        int fitness[]= new int[population];
+
+
+
+        for(int i=0;i<population;i++)
+        {
+            for(int j=0;j<6;j++)
+            {
+                chromosome[i][j]= rand.nextInt((100-1)+1)+1;
+//                System.out.print(chromosome[i][j]+"\t");
+            }
+        }// end for
+
+        for (int k=0; k< maxGenerations;k++ ) {
+
+            fitness = Utilities.CalculateFitness(chromosome,population,map,map1.getDistaneMax());
+
+
+        }
+
 
     } // end main method
-
 } // end Main class

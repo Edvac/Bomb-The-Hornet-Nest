@@ -1,5 +1,3 @@
-package javaapplication2;
-
 
 
 import javax.security.auth.login.Configuration;
@@ -33,11 +31,6 @@ public class Map
         this.y = y;
         arrayMap = new int[x][y];
     }
-
-    public double distanceMax()
-    {
-       return Math.sqrt(2) * 100; //Anti toy 100 einai i diastasi tou pinaka px. n
-    } // end distanceMax
 
     public int[][] getArrayMap()
     {
