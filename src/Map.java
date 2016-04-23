@@ -1,5 +1,3 @@
-package javaapplication2;
-
 
 
 import javax.security.auth.login.Configuration;
@@ -11,9 +9,11 @@ import java.util.Arrays;
 public class Map
 {
     // static problem solution
-    private int [][] arrayMap = {{25,65,100},{23,8,200},{7,13,327},{95,53,440},{3,3,450},
+    private   int [][] arrayMap = {{25,65,100},{23,8,200},{7,13,327},{95,53,440},{3,3,450},
             {54,56,639},{67,78,650},{32,4,678},{24,76,750},{66,89,801},
             {84,4,945},{34,23,967}};
+
+    private   int [] arrayHornetsPopulation  = {100,200,327,440,450,639,650,678,750,801,945,967};
 
     private double distanceMax;
 
@@ -34,11 +34,6 @@ public class Map
         arrayMap = new int[x][y];
     }
 
-    public double distanceMax()
-    {
-       return Math.sqrt(2) * 100; //Anti toy 100 einai i diastasi tou pinaka px. n
-    } // end distanceMax
-
     public int[][] getArrayMap()
     {
         return arrayMap;
@@ -58,6 +53,17 @@ public class Map
     {
         this.distanceMax = distaneMax;
     }
+
+   /* public static void refill()
+    {
+        for(int i=0;i<arrayHornetsPopulation.length;i++)
+        {
+            arrayMap[i][2]=arrayHornetsPopulation[i];
+
+        }
+
+    }
+    */
 
     @Override
     public String toString()
