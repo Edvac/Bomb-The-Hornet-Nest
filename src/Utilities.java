@@ -1,3 +1,4 @@
+
 import java.util.Random;
 
 /**
@@ -11,9 +12,9 @@ public abstract class Utilities
     public static int [] CalculateFitness(int [][] coordinates,int population,int map[][],double maxD)
     {
 
-        double d=0;
-        int deadHornets[] = new int[50];
-        int k =0;
+        double d;
+        int deadHornets[] = new int[population];
+        int k ;
         for (int i=0; i< population ;i++ )
         {
            // System.out.println("Population "+i);
@@ -30,8 +31,12 @@ public abstract class Utilities
                     if(map[i1][2]<0)
                     {
 
-                        deadHornets[i] -= deadHornets[i]*(20/100);
+                       // System.out.println("Problem with the: "+i);
+                       // System.out.println("DeadHornets First: "+ deadHornets[i]);
+                        deadHornets[i] = deadHornets[i] -((deadHornets[i]*20)/100);
+                     //   System.out.println("DeadHornets During: "+ deadHornets[i]+",k:"+ k);
                         deadHornets[i] += k;
+                       //System.out.println("DeadHornets total: "+ deadHornets[i]);
                        continue;
                     }
 
@@ -62,25 +67,33 @@ public abstract class Utilities
     }
     public static int roulleteSelectionMethod(int fitness[])
     {
+
         int totalSum = 0;
         Random rand = new Random();
-        for(int i=0;i<fitness.length-1;i++)
+        for(int i=0;i<fitness.length;i++)
         {
             totalSum += fitness[i];
         }
-        int randNumber =  rand.nextInt((totalSum-0)+1);
+        int randNumber =  rand.nextInt((totalSum)+1);
+        System.out.println("Total Sum: "+ totalSum+", RandNumber: "+ randNumber);
         int partialSum = 0;
 
-        for(int i=0;i<fitness.length-1;i++)
+
+        for(int i=0;i<fitness.length;i++)
         {
+
+            randNumber -= fitness[i];
+            if(randNumber<=0) return i;
+            /*
             partialSum +=fitness[i];
             if(partialSum>=randNumber)
             {
                 return i;
             }
+            */
         }
 
-        return -1;
+        return fitness.length-1;
 
     }
 

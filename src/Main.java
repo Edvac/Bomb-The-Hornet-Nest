@@ -1,4 +1,5 @@
 
+import java.util.Arrays;
 import java.util.Random;
 import org.w3c.dom.Document;
 
@@ -46,7 +47,8 @@ public class Main
         Random rand = new Random();
         Map map1 = new Map();
         int map [][] = map1.getArrayMap();
-        int fitness[]= new int[population];
+       int fitness[]= new int[population];
+        //int fitness[] = {3550,2560,3140,2150,3650};
         int roulleteSelected ;
 
 
@@ -63,6 +65,13 @@ public class Main
         for (int k=0; k< maxGenerations;k++ ) {
 
             System.out.println("Generation: " + (k+1)+"--------------");
+
+
+
+            System.out.println("Fitness is happening now Dude!!!");
+
+            fitness = Utilities.CalculateFitness(chromosome,population,map,map1.getDistaneMax());
+
             for(int i=0;i<population;i++)
             {
 
@@ -72,14 +81,11 @@ public class Main
                     System.out.print(chromosome[i][j]+" , ");
 
                 }
+                System.out.print(fitness[i]);
                 System.out.println();
 
 
             }// end for
-
-
-            System.out.println("Fitness is happening now Dude!!!");
-            fitness = Utilities.CalculateFitness(chromosome,population,map,map1.getDistaneMax());
 
             for(int i=0;i<population;i++)
             {
@@ -93,7 +99,7 @@ public class Main
                     System.out.print(roulleteChromosome[i][j]+" , ");
 
                 }
-                System.out.println(fitness[i]);
+                System.out.println(fitness[roulleteSelected]);
 
 
             }// end for
