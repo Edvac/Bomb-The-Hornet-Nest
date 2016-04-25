@@ -1,4 +1,5 @@
 
+import java.util.Arrays;
 import java.util.Random;
 import org.w3c.dom.Document;
 
@@ -39,13 +40,16 @@ public class Main
 
     public static void main(String[] args)
     {
-        int maxGenerations = 500;
-        int population = 50;
+        int maxGenerations = 50;
+        int population = 5;
         int chromosome[][] = new int[population][6]; // array with  chromosome
+        int roulleteChromosome[][] = new int[population][6];
         Random rand = new Random();
         Map map1 = new Map();
         int map [][] = map1.getArrayMap();
-        int fitness[]= new int[population];
+       int fitness[]= new int[population];
+        //int fitness[] = {3550,2560,3140,2150,3650};
+        int roulleteSelected ;
 
 
 
@@ -60,7 +64,46 @@ public class Main
 
         for (int k=0; k< maxGenerations;k++ ) {
 
+            System.out.println("Generation: " + (k+1)+"--------------");
+
+
+
+            System.out.println("Fitness is happening now Dude!!!");
+
             fitness = Utilities.CalculateFitness(chromosome,population,map,map1.getDistaneMax());
+
+            for(int i=0;i<population;i++)
+            {
+
+                for(int j=0;j<6;j++)
+                {
+
+                    System.out.print(chromosome[i][j]+" , ");
+
+                }
+                System.out.print(fitness[i]);
+                System.out.println();
+
+
+            }// end for
+
+            for(int i=0;i<population;i++)
+            {
+                roulleteSelected= Utilities.roulleteSelectionMethod(fitness);
+
+                System.out.println("The roullete wheel select: "+roulleteSelected);
+                System.out.print("The new array Chromosome: ");
+                for(int j=0;j<6;j++)
+                {
+                    roulleteChromosome[i][j] =chromosome[roulleteSelected][j];
+                    System.out.print(roulleteChromosome[i][j]+" , ");
+
+                }
+                System.out.println(fitness[roulleteSelected]);
+
+
+            }// end for
+             chromosome=roulleteChromosome;
 
 
         }
