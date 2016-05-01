@@ -1,81 +1,53 @@
 
-
-import javax.security.auth.login.Configuration;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * Created by George, Haris and Hronis on 11-Apr-16.
  */
-public class Map
-{
-    // static problem solution
-    private   int [][] arrayMap = {{25,65,100},{23,8,200},{7,13,327},{95,53,440},{3,3,450},
-            {54,56,639},{67,78,650},{32,4,678},{24,76,750},{66,89,801},
-            {84,4,945},{34,23,967}};
+public class Map {
 
-    private   int [] arrayHornetsPopulation  = {100,200,327,440,450,639,650,678,750,801,945,967};
+    // static problem solution
+    private ArrayList<Nest> arrayMap = new ArrayList();
 
     private double distanceMax;
 
     private int x;
     private int y;
 
-    public Map()
-    {
-        x = 12;
-        y = 3;
+    public Map() {
+        fill();
         distanceMax = 141.42;
     }
 
-    public Map(int x, int y)
-    {
+    public Map(int x, int y) {
         this.x = x;
         this.y = y;
-        arrayMap = new int[x][y];
     }
 
-    public int[][] getArrayMap()
-    {
+    public ArrayList<Nest> getArrayMap() {
         return arrayMap;
     }
 
-    public void setArrayMap(int[][] arrayMap)
-    {
-        this.arrayMap = arrayMap;
-    }
-
-    public double getDistaneMax()
-    {
+    public double getDistaneMax() {
         return distanceMax;
     }
 
-    public void setDistaneMax(float distaneMax)
-    {
-        this.distanceMax = distaneMax;
+    public Nest getNest(int index){
+        return arrayMap.get(index);
     }
-
-   /* public static void refill()
-    {
-        for(int i=0;i<arrayHornetsPopulation.length;i++)
-        {
-            arrayMap[i][2]=arrayHornetsPopulation[i];
-
-        }
+    private void fill() {
+        arrayMap.add(new Nest(25, 65, 100));
+        arrayMap.add(new Nest(23, 8, 200));
+        arrayMap.add(new Nest(7, 13, 327));
+        arrayMap.add(new Nest(95, 53, 440));
+        arrayMap.add(new Nest(3, 3, 450));
+        arrayMap.add(new Nest(54, 56, 639));
+        arrayMap.add(new Nest(67, 78, 650));
+        arrayMap.add(new Nest(32, 4, 678));
+        arrayMap.add(new Nest(24, 76, 750));
+        arrayMap.add(new Nest(66, 89, 801));
+        arrayMap.add(new Nest(84, 4, 945));
+        arrayMap.add(new Nest(34, 23, 967));
 
     }
-    */
-
-    @Override
-    public String toString()
-    {
-        String arrayMapString ="";
-        for (int i=0; i<x; i++){
-            arrayMapString += "Number Nest "+(i+1)+" :";
-            for (int j=0; j<y; j++){
-                arrayMapString +=  arrayMap[i][j] + "," ;
-            }
-            arrayMapString += "\n";
-        }
-        return arrayMapString;
-    } // end toString
 }// end map
