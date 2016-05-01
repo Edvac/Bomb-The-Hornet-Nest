@@ -10,182 +10,153 @@ public abstract class Utilities
 
 
     private static int [] arrayHornetsPopulation  = {100,200,327,440,450,639,650,678,750,801,945,967};
-    public static int [] CalculateFitness(int [][] coordinates,int population,int map[][],double maxD)
-    {
+    public static ArrayList<Integer> CalculateFitness(ArrayList<Chromosome> chromosomes, Map map) {
 
-        double d;
-        int deadHornets[] = new int[population];
-        int k ;
-        for (int i=0; i< population ;i++ )
-        {
-           // System.out.println("Population "+i);
-            for (int j=0; j < 6 ;j+=2 ) {
+        double arrayDistance[][] = new double[12][3];
+        double dmax = map.getDistaneMax();
+        ArrayList<Integer> deadHornets = new ArrayList();
 
-                for (int i1 = 0; i1 < map.length; i1++)
-                {
-                    d = Math.sqrt(Math.pow((coordinates[i][j] - map[i1][0]), 2) +
-                            Math.pow((coordinates[i][j+1] - map[i1][1]), 2));
+        chromosomes.stream().forEach((_item) -> {
+            deadHornets.add(0);
+        });
 
-                    // Theoretical Hornets killed by single bomb (Doesn't calculating overlapping kills by other bombs)
-                   k= (int)(map[i1][2]*(maxD/((20*d)+0.00001)));
-                   map[i1][2] -=k;
-                    if(map[i1][2]<0)
-                    {
+        int k = 0;
 
-                       // System.out.println("Problem with the: "+i);
-                       // System.out.println("DeadHornets First: "+ deadHornets[i]);
-                        deadHornets[i] = deadHornets[i] -((deadHornets[i]*20)/100);
-                     //   System.out.println("DeadHornets During: "+ deadHornets[i]+",k:"+ k);
-                        deadHornets[i] += k;
-                       //System.out.println("DeadHornets total: "+ deadHornets[i]);
-                       continue;
+        ArrayList<Nest> nests = map.getArrayMap();
+
+        for (int i = 0; i < chromosomes.size(); i++) {
+            arrayDistance = calculateDistance(chromosomes.get(i),nests);
+            //System.out.println("Population:"+i);
+            deadHornets.add(i, 0);
+            for(int i1=0;i1<3;i1++)
+            {
+                //  System.out.println("Bomb :"+i1);
+                for (Nest nest : nests) {
+
+                    k = (int) (nest.getHornets() * (dmax / ((20 * arrayDistance[nests.indexOf(nest)][i1])) + 0.00001));
+
+                    // System.out.println("K : " + k);
+                    if (nest.getHornets() - k < 0) {
+                        if (deadHornets.get(i) - ((deadHornets.get(i) * 20) / 100) > 0) {
+                            deadHornets.add(i, deadHornets.get(i) - ((deadHornets.get(i) * 20) / 100));
+                        }
+                    } else {
+                        nest.setHornets(nest.getHornets() - k);
+                        // System.out.println("deadhornets "+i+": "+deadHornets.get(i));
+                        deadHornets.add(i, deadHornets.get(i) + k);
                     }
 
-                    deadHornets[i] += k;
-
-
                 }
             }
 
-            //System.out.println("DeadHornets : "+deadHornets[i]);
-
-            //1st Sollution
-          //  map = refill(map);
-
-            //2nd Sollution
-             for(int k1=0;k1<arrayHornetsPopulation.length;k1++)
-             {
-                map[k1][2]= arrayHornetsPopulation[k1];
-
-             }
-            //3rd Static refill mesa sthn map klasi alla prepei na kanoyme static kai ton arrayMap kai arrayHornetsPopulation
-            //giati alliws bgazei error.Den xerw ti einai kalytero.....
-            //Map.refill();
 
 
+
+            for (int j = 0; j < nests.size(); j++) {
+                nests.get(j).setHornets(arrayHornetsPopulation[j]);
+            }
         }
+
         return deadHornets;
     }
-    public static int roulleteSelectionMethod(int fitness[])
-    {
 
-        int totalSum = 0;
+    public static double[][] calculateDistance(Chromosome chromosome,ArrayList<Nest> nest)
+    {
+        double arrayDistance [][] = new double[12][3];
+        int i = 0;
+        for (Nest n : nest) {
+            for (int j = 0; j < 3; j++) {
+                switch (j) {
+                    case 0:
+                        arrayDistance[i][j] = (Math.sqrt(Math.pow(chromosome.getFirstXCoordinance() - n.getXCoordinance(), 2)
+                                + Math.pow(chromosome.getFirstYCoordinance() - n.getYCoordinance(), 2)));
+                        break;
+
+                    case 1:
+                        arrayDistance[i][j] = (Math.sqrt(Math.pow(chromosome.getSecondXCoordinance()- n.getXCoordinance(), 2)
+                                + Math.pow(chromosome.getSecondYCoordinance()- n.getYCoordinance(), 2)));
+                        break;
+
+                    case 2:
+                        arrayDistance[i][j] = (Math.sqrt(Math.pow(chromosome.getThirdXCoordinance() - n.getXCoordinance(), 2)
+                                + Math.pow(chromosome.getThirdYCoordinance() - n.getYCoordinance(), 2)));
+                        break;
+
+                }
+            }
+            i++;
+        }
+        return arrayDistance;
+
+    }
+
+    public static int tournamentSelection(TreeMap<Integer, Integer> chromosomeWithFitness) {
         Random rand = new Random();
-        for(int i=0;i<fitness.length;i++)
-        {
-            totalSum += fitness[i];
-        }
-        int randNumber =  rand.nextInt((totalSum)+1);
+        TreeMap<Integer, Integer> tournament = new TreeMap();
 
-        int partialSum = 0;
+        ArrayList<Integer> fitness = new ArrayList(chromosomeWithFitness.keySet());
+        ArrayList<Integer> indexes = new ArrayList(chromosomeWithFitness.values());
 
+        int pick;
+//        System.out.println("Chromosome Size : " +chromosomeWithFitness);
+        int tournamentSize = rand.nextInt(chromosomeWithFitness.size() - 3) + 3;
 
-        for(int i=0;i<fitness.length;i++)
-        {
+        for (int i = 0; i < tournamentSize; i++) {
+            pick = rand.nextInt(chromosomeWithFitness.size() - 3) + 3;
 
-           // randNumber -= fitness[i];
-            //if(randNumber<=0) return i;
-
-            partialSum +=fitness[i];
-            if(partialSum>=randNumber)
-            {
-                return i;
-            }
-
+            tournament.put(fitness.get(i), indexes.get(i));
         }
 
-        return fitness.length-1;
-
+        return tournament.lastEntry().getValue();
     }
-    public static int tournamentSelection(int fitness[])
-    {
+
+    public static ArrayList<Chromosome> crossOver(ArrayList<Chromosome> roulleteChromosome, int population) {
 
         Random rand = new Random();
-        int randSize = rand.nextInt(fitness.length)+1;
-        int bestChromosome = -999;
-        int bestIndex=0;
-        int tournament [] = new int[randSize];
-        int randIndex;
-        for(int i =0;i<randSize;i++)
-        {
-            randIndex=rand.nextInt(fitness.length-1)+1;
-            tournament[i]=fitness[randIndex];
-            if(tournament[i]>bestChromosome)
-            {
-               bestChromosome = tournament[i];
-                bestIndex = randIndex;
+        int randFather, randMother, randCut;
 
-            }
-        }
-          return bestIndex;
-    }
+        ArrayList<Chromosome> childrenChromosomes = new ArrayList();
+        randCut = ((rand.nextInt(2) + 1) * 2) - 1;
+        // System.out.println(randCut);
 
-    public static int [][] crossOver(int [][]roulleteChromosome,int population)
-    {
-      Random rand = new Random();
-        int randFather,randMother,randCut;
-        int childrenChromosome [][] = new int[population][6];
-        randCut = 3;//3  ((rand.nextInt(2)+1)*2)-1;//emfanizei to 1 h to 3.
-       // System.out.println(randCut);
+        Chromosome child;
 
-        for(int i=0;i<population/2;i++)
-        {
-            randFather = rand.nextInt((population-1)+1);
-            randMother = rand.nextInt((population-1)+1);
+        int mask[] = new int[6];
 
+        for (int i = 0; i < population; i++) {
+            child = new Chromosome();
+            for (int j = 0; j < 6; j++) {
 
-            for(int i2=0;i2<population-1;i2+=2)
-            {
-                for(int i1=0;i1<=randCut;i1++)
-                {
-                    childrenChromosome[i2][i1] = roulleteChromosome[randFather][i1];
-                     childrenChromosome[i2+1][i1] = roulleteChromosome[randMother][i1];
-
-
+                if (j <= randCut) {
+                    mask[j] = 0;
+                } else {
+                    mask[j] = 1;
                 }
-                for (int j=randCut+1; j<6; j++)
-                {
-                    childrenChromosome[i2][j] = roulleteChromosome[randMother][j];
-                    childrenChromosome[i2+1][j] = roulleteChromosome[randFather][j];
-
-                }
-
-
-                System.out.println("\nFather");
-                          for(int k=0; k< 6; k++)
-                          {
-                            System.out.print(roulleteChromosome[randFather][k]+",");
-                          }
-                System.out.println("\nMother");
-                for(int k=0; k< 6; k++)
-                {
-                    System.out.print(roulleteChromosome[randMother][k]+",");
-                }
-                  /*
-                System.out.println("\nChild1");
-                for(int k=0; k< 6; k++)
-                {
-                    System.out.print( childrenChromosome[i2][k] +",");
-                }
-                System.out.println("\nChild2");
-                for(int k=0; k< 6; k++)
-                {
-                    System.out.print( childrenChromosome[i2+1][k] +",");
-                }
-               */
             }
 
-        }
-        return childrenChromosome;
-    }
-    public static int[][] refill(int arrayMap [][])
-    {
-        for(int i=0;i<arrayHornetsPopulation.length;i++)
-        {
-            arrayMap[i][2]=arrayHornetsPopulation[i];
+            randFather = rand.nextInt((population - 1) + 1);
+            randMother = rand.nextInt((population - 1) + 1);
 
-        }
-        return arrayMap;
+            for (int j = 0; j < 6; j++) {
+                if (mask[j] == 0) {
+                    child.setCoordinance(roulleteChromosome.get(randFather).getCoordinance(j), j);
+                } else {
+                    child.setCoordinance(roulleteChromosome.get(randMother).getCoordinance(j), j);
+                }
+            }
 
+            childrenChromosomes.add(child);
+        }
+
+        return childrenChromosomes;
     }
+
+    public static Chromosome mutation(Chromosome chromosome) {
+
+        Random rand = new Random();
+
+        chromosome.setCoordinance(rand.nextInt(100), rand.nextInt(6));
+        return chromosome;
+    }
+
 }// end Utilities
